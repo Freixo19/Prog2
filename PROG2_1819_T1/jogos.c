@@ -66,7 +66,6 @@ int jogos_save(vetor *vec, const char *nomef){
 equipa equipa_stats(vetor *vec, int pos, int equipaigual, int casafora){
     //o casafora serve para ver se o estamos a adicionar informações sobre a equipa que jogou em casa ou fora, sendo casafora=0 equipa que jogou em casa e casafora=1 a equipa que jogou fora.
     equipa eqnova;
-    //ver se isto nao da o berro ao nao guardar-mos o nome ¯\_(ツ)_/¯
     if(equipaigual == 0){
         if(casafora == 0){
             strcpy(eqnova.nome_equipa,vetor_elemento(vec,pos)->nome_casa);
@@ -115,9 +114,10 @@ vetor_equipas *stats_equipa(vetor *vec){
     vetor_equipas *equipatotal;
     equipa eq;
     equipatotal = vetor_equipas_novo();
-    int equipaigual=0;
+    int equipaigual[2]={0,0};
     vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,0),-1);
     vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,1),-1);
+    printf("tamanho: %i\n", vetor_equipas_tamanho(equipatotal));
     for(int i=1; i<vetor_tamanho(vec); i++){
 
         for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
@@ -127,25 +127,25 @@ vetor_equipas *stats_equipa(vetor *vec){
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
-                equipaigual++;
+                equipaigual[0]++;
             }
-            if (equipaigual == 0) {
-                vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,0),-1);
-            }
-            equipaigual=0;
             if(strcmp(vetor_elemento(vec,i)->nome_fora,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
                 eq = equipa_stats(vec,i,1,1);
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
-                equipaigual++;
+                equipaigual[1]++;
             }
-            if (equipaigual == 0) {
-                vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,1),-1);
-            }
-            equipaigual=0;
         }
+        if (equipaigual[0] == 0) {
+            vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,0),-1);
+        }
+        if (equipaigual[1] == 0) {
+            vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,1),-1);
+        }
+        equipaigual[0] = 0; equipaigual[1] = 0;
     }
+
     for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
         vetor_equipas_elemento(equipatotal,j)->vermelhos[0] /= 38;
         vetor_equipas_elemento(equipatotal,j)->vermelhos[1] /= 38;
@@ -153,7 +153,6 @@ vetor_equipas *stats_equipa(vetor *vec){
     }
     return equipatotal;
 }
-
 
 int equipas_ordena(vetor_equipas *v, int criterio) {
 
