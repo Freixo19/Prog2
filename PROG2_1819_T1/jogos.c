@@ -146,7 +146,33 @@ int equipas_ordena(vetor_equipas *v, int criterio) {
 
 int corrige_jogo(vetor *vec, const char *nomef){
 
-    return -1;
+    vetor *vetorerrata;
+
+    vetorerrata=jogos_load(nomef);
+
+    if(vetorerrata==NULL)
+    {
+        perror("impossivel ler vetor\n");
+
+        return -1;
+    }
+
+    for(int i=0;i<vetor_tamanho(vetorerrata);i++)
+    {
+        for(int j=0;j<vetor_tamanho(vec);j++)
+        {
+            if(strcmp(vetor_elemento(vetorerrata,i)->epoca,vetor_elemento(vec,j)->epoca)==0 && strcmp(vetor_elemento(vetorerrata,i)->nome_casa,vetor_elemento(vec,j)->nome_casa)==0 && strcmp(vetor_elemento(vetorerrata,i)->nome_fora,vetor_elemento(vec,j)->nome_fora)==0 )
+            {
+                vetor_elemento(vec,j)->golos_casa=vetor_elemento(vetorerrata,i)->golos_casa;
+                vetor_elemento(vec,j)->golos_fora=vetor_elemento(vetorerrata,i)->golos_fora;
+                vetor_elemento(vec,j)->vermelhos_casa=vetor_elemento(vetorerrata,i)->vermelhos_casa;
+                vetor_elemento(vec,j)->vermelhos_fora=vetor_elemento(vetorerrata,i)->vermelhos_fora;
+
+            }
+        }
+    }
+
+    return 0;
 }
 
 
