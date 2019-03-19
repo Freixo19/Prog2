@@ -196,7 +196,42 @@ int corrige_jogo(vetor *vec, const char *nomef){
 
 int pontos_de_equipa(vetor *vec, char *nome_equipa, char *epoca){
 
-    return -1;
+    int pontos=0;
+
+    for(int i=0;i<vetor_tamanho(vec);i++)
+    {
+        if(strcmp(vetor_elemento(vec,i)->nome_casa,nome_equipa)==0 && strcmp(vetor_elemento(vec,i)->epoca,epoca)==0)
+        {
+            
+                if((vetor_elemento(vec,i)->golos_casa)>(vetor_elemento(vec,i)->golos_fora))
+                {
+                    pontos+=3;
+                }
+
+                if((vetor_elemento(vec,i)->golos_casa)==(vetor_elemento(vec,i)->golos_fora))
+                {
+                    pontos+=1;
+                }
+            
+        }
+
+         if(strcmp(vetor_elemento(vec,i)->nome_fora,nome_equipa)==0 && strcmp(vetor_elemento(vec,i)->epoca,epoca)==0)
+        {
+            
+                if((vetor_elemento(vec,i)->golos_fora)>(vetor_elemento(vec,i)->golos_casa))
+                {
+                    pontos+=3;
+                }
+
+                if((vetor_elemento(vec,i)->golos_casa)==(vetor_elemento(vec,i)->golos_fora))
+                {
+                    pontos+=1;
+                }
+            
+        }
+    }
+
+    return pontos;
 }
 
 
