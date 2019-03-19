@@ -198,6 +198,12 @@ int pontos_de_equipa(vetor *vec, char *nome_equipa, char *epoca){
 
     int pontos=0;
 
+    if(vec==NULL)
+    {
+        perror("O vetor introduzido nao pode ser lido\n");
+        return -1;
+    }
+
     for(int i=0;i<vetor_tamanho(vec);i++)
     {
         if(strcmp(vetor_elemento(vec,i)->nome_casa,nome_equipa)==0 && strcmp(vetor_elemento(vec,i)->epoca,epoca)==0)
@@ -229,7 +235,7 @@ int pontos_de_equipa(vetor *vec, char *nome_equipa, char *epoca){
                 }
             
         }
-    }
+    }   
 
     return pontos;
 }
