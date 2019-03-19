@@ -11,39 +11,24 @@
 
 
 vetor* jogos_load(const char *nomef){
-    FILE *f;
-    vetor *vet;
+   FILE *f = fopen(nomef,"r");
+
+    vetor *vet=vetor_novo();
     jogo jogoatual;
-    int valor;
-    vet = vetor_novo();
-    char totalstring[50], *token;
-    f = fopen(nomef,"r");
-    if(f == NULL) {
+    int i=0;
+
+    
+    if(f == NULL){
     perror("Erro a abrir o ficheiro.\n");
         return NULL;
     }
-    while(fgets(totalstring, 50, f)!=NULL){
-        token = strtok(totalstring," ");
-        strcpy(jogoatual.epoca, token);
-        token = strtok(NULL," ");
-        strcpy(jogoatual.nome_casa, token);
-        token = strtok(NULL," ");
-        strcpy(jogoatual.nome_fora, token);
-        token = strtok(NULL," ");
-        valor=atoi(token);
-        jogoatual.golos_casa=valor;
-        token = strtok(NULL," ");
-        valor=atoi(token);
-        jogoatual.golos_fora=valor;
-        token = strtok(NULL," ");
-        valor=atoi(token);
-        jogoatual.vermelhos_casa=valor;
-        token = strtok(NULL," ");
-        valor=atoi(token);
-        jogoatual.vermelhos_fora=valor;
-        vetor_insere(vet, jogoatual, -1);
+    while(fscanf(f,"%s %s %s %d %d %d %d",jogoatual.epoca,jogoatual.nome_casa,jogoatual.nome_fora,&(jogoatual.golos_casa),&(jogoatual.golos_fora),&(jogoatual.vermelhos_casa),&(jogoatual.vermelhos_fora))==7)
+    {
+        vetor_insere(vet,jogoatual,i);
+        i++;
     }
     fclose(f);
+
     return vet;
 }
 
