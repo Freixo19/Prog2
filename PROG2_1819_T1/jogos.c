@@ -80,31 +80,31 @@ equipa equipa_stats(vetor *vec, int pos, int equipaigual, int casafora){
     }
     if(casafora == 0){
         if(strcmp(vetor_elemento(vec,pos)->epoca,"15/16") == 0){
-            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_casa;
+            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_casa/38;
             eqnova.vermelhos[1]=0;
             eqnova.vermelhos[2]=0;
         }else if(strcmp(vetor_elemento(vec,pos)->epoca,"16/17") == 0){
             eqnova.vermelhos[0]=0;
-            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_casa;
+            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_casa/38;
             eqnova.vermelhos[2]=0;
         }else{
             eqnova.vermelhos[0]=0;
             eqnova.vermelhos[1]=0;
-            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_casa;
+            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_casa/38;
         }
     }else{
         if(strcmp(vetor_elemento(vec,pos)->epoca,"15/16") == 0){
-            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_fora;
+            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_fora/38;
             eqnova.vermelhos[1]=0;
             eqnova.vermelhos[2]=0;
         }else if(strcmp(vetor_elemento(vec,pos)->epoca,"16/17") == 0){
             eqnova.vermelhos[0]=0;
-            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_fora;
+            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_fora/38;
             eqnova.vermelhos[2]=0;
         }else{
             eqnova.vermelhos[0]=0;
             eqnova.vermelhos[1]=0;
-            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_fora;
+            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_fora/38;
         }
     }
     return eqnova;
@@ -146,11 +146,6 @@ vetor_equipas *stats_equipa(vetor *vec){
         equipaigual[0] = 0; equipaigual[1] = 0;
     }
 
-    for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
-        vetor_equipas_elemento(equipatotal,j)->vermelhos[0] /= 38;
-        vetor_equipas_elemento(equipatotal,j)->vermelhos[1] /= 38;
-        vetor_equipas_elemento(equipatotal,j)->vermelhos[2] /= 38;
-    }
     return equipatotal;
 }
 
