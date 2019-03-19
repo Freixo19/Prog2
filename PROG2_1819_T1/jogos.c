@@ -63,77 +63,94 @@ int jogos_save(vetor *vec, const char *nomef){
     return i;
 }
 
+equipa equipa_stats(vetor *vec, int pos, int equipaigual, int casafora){
+    //o casafora serve para ver se o estamos a adicionar informações sobre a equipa que jogou em casa ou fora, sendo casafora=0 equipa que jogou em casa e casafora=1 a equipa que jogou fora.
+    equipa eqnova;
+    //ver se isto nao da o berro ao nao guardar-mos o nome ¯\_(ツ)_/¯
+    if(equipaigual == 0){
+        if(casafora == 0){
+            strcpy(eqnova.nome_equipa,vetor_elemento(vec,pos)->nome_casa);
+        }else{
+            strcpy(eqnova.nome_equipa,vetor_elemento(vec,pos)->nome_fora);
+        }
+    }
+    if(casafora == 0){
+        eqnova.diff_golos=(vetor_elemento(vec,pos)->golos_casa)-(vetor_elemento(vec,pos)->golos_fora);
+    }else{
+        eqnova.diff_golos=(vetor_elemento(vec,pos)->golos_fora)-(vetor_elemento(vec,pos)->golos_casa);
+    }
+    if(casafora == 0){
+        if(strcmp(vetor_elemento(vec,pos)->epoca,"15/16") == 0){
+            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_casa;
+            eqnova.vermelhos[1]=0;
+            eqnova.vermelhos[2]=0;
+        }else if(strcmp(vetor_elemento(vec,pos)->epoca,"16/17") == 0){
+            eqnova.vermelhos[0]=0;
+            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_casa;
+            eqnova.vermelhos[2]=0;
+        }else{
+            eqnova.vermelhos[0]=0;
+            eqnova.vermelhos[1]=0;
+            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_casa;
+        }
+    }else{
+        if(strcmp(vetor_elemento(vec,pos)->epoca,"15/16") == 0){
+            eqnova.vermelhos[0]=vetor_elemento(vec,pos)->vermelhos_fora;
+            eqnova.vermelhos[1]=0;
+            eqnova.vermelhos[2]=0;
+        }else if(strcmp(vetor_elemento(vec,pos)->epoca,"16/17") == 0){
+            eqnova.vermelhos[0]=0;
+            eqnova.vermelhos[1]=vetor_elemento(vec,pos)->vermelhos_fora;
+            eqnova.vermelhos[2]=0;
+        }else{
+            eqnova.vermelhos[0]=0;
+            eqnova.vermelhos[1]=0;
+            eqnova.vermelhos[2]=vetor_elemento(vec,pos)->vermelhos_fora;
+        }
+    }
+    return eqnova;
+}
 
 vetor_equipas *stats_equipa(vetor *vec){
     vetor_equipas *equipatotal;
-    equipa equipanova;
+    equipa eq;
     equipatotal = vetor_equipas_novo();
     int equipaigual=0;
-    for(int i=0; i<vetor_tamanho(vec); i++){
-        strcpy(equipanova.nome_equipa,vetor_elemento(vec,i)->nome_casa);
-        equipanova.diff_golos=(vetor_elemento(vec,i)->golos_casa)-(vetor_elemento(vec,i)->golos_fora);
-        if(strcmp(vetor_elemento(vec,i)->epoca,"15/16") == 0){
-            equipanova.vermelhos[0]+=vetor_elemento(vec,i)->vermelhos_casa;
-        }else if(strcmp(vetor_elemento(vec,i)->epoca,"16/17") == 0){
-            equipanova.vermelhos[1]+=vetor_elemento(vec,i)->vermelhos_casa;
-        }else{
-            equipanova.vermelhos[2]+=vetor_elemento(vec,i)->vermelhos_casa;
-        }
-        vetor_equipas_insere(equipatotal,equipanova,-1);
+    vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,0),-1);
+    vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,1),-1);
+    for(int i=1; i<vetor_tamanho(vec); i++){
+
         for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
-            printf("contador 2: %i\n", j);
+            
             if(strcmp(vetor_elemento(vec,i)->nome_casa,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
-                vetor_equipas_elemento(equipatotal,j)->diff_golos=(vetor_elemento(vec,i)->golos_casa)-(vetor_elemento(vec,i)->golos_fora);
-                if(strcmp(vetor_elemento(vec,i)->epoca,"15/16") == 0){
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[0]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }else if(strcmp(vetor_elemento(vec,i)->epoca,"16/17") == 0){
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[1]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }else{
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[2]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }
+                eq = equipa_stats(vec,i,1,0);
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
                 equipaigual++;
             }
-            printf("tamanho: %i\n", equipaigual);
-            printf("tamanho: %i\n", i);
-            if(equipaigual==0){
-                strcpy(equipanova.nome_equipa,vetor_elemento(vec,i)->nome_casa);
-                equipanova.diff_golos=(vetor_elemento(vec,i)->golos_casa)-(vetor_elemento(vec,i)->golos_fora);
-                if(strcmp(vetor_elemento(vec,i)->epoca,"15/16") == 0){
-                    equipanova.vermelhos[0]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }else if(strcmp(vetor_elemento(vec,i)->epoca,"16/17") == 0){
-                    equipanova.vermelhos[1]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }else{
-                    equipanova.vermelhos[2]+=vetor_elemento(vec,i)->vermelhos_casa;
-                }
-            vetor_equipas_insere(equipatotal,equipanova,-1);
-        }
-        equipaigual=0;
-        if(strcmp(vetor_elemento(vec,i)->nome_fora,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
-                vetor_equipas_elemento(equipatotal,j)->diff_golos=(vetor_elemento(vec,i)->golos_fora)-(vetor_elemento(vec,i)->golos_casa);
-                if(strcmp(vetor_elemento(vec,i)->epoca,"15/16") == 0){
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[0]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }else if(strcmp(vetor_elemento(vec,i)->epoca,"16/17") == 0){
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[1]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }else{
-                    vetor_equipas_elemento(equipatotal,j)->vermelhos[2]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }
-                equipaigual++;
-        }
-        if(equipaigual==0){
-            strcpy(equipanova.nome_equipa,vetor_elemento(vec,i)->nome_fora);
-            equipanova.diff_golos=(vetor_elemento(vec,i)->golos_fora)-(vetor_elemento(vec,i)->golos_casa);
-            if(strcmp(vetor_elemento(vec,i)->epoca,"15/16") == 0){
-                    equipanova.vermelhos[0]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }else if(strcmp(vetor_elemento(vec,i)->epoca,"16/17") == 0){
-                    equipanova.vermelhos[1]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }else{
-                    equipanova.vermelhos[2]+=vetor_elemento(vec,i)->vermelhos_fora;
-                }
-            vetor_equipas_insere(equipatotal,equipanova,-1);
+            if (equipaigual == 0) {
+                vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,0),-1);
+            }
             equipaigual=0;
-        }}
+            if(strcmp(vetor_elemento(vec,i)->nome_fora,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
+                eq = equipa_stats(vec,i,1,1);
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
+                vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
+                equipaigual++;
+            }
+            if (equipaigual == 0) {
+                vetor_equipas_insere(equipatotal,equipa_stats(vec,i,0,1),-1);
+            }
+            equipaigual=0;
+        }
     }
-    printf("tamanho: %i\n", equipatotal->tamanho);
+    for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
+        vetor_equipas_elemento(equipatotal,j)->vermelhos[0] /= 38;
+        vetor_equipas_elemento(equipatotal,j)->vermelhos[1] /= 38;
+        vetor_equipas_elemento(equipatotal,j)->vermelhos[2] /= 38;
+    }
     return equipatotal;
 }
 
