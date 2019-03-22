@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <string.h>
 
+void quickSortIterdiffgolos(vetor_equipas v[], int left, int right);
+void quickSortIterordemalfabetica(vetor_equipas v[], int left, int right);
+void swap(vetor_equipas *x,int i,int j);
+
 
 vetor* jogos_load(const char *nomef){
    FILE *f = fopen(nomef,"r");
@@ -134,10 +138,115 @@ vetor_equipas *stats_equipa(vetor *vec){
     return equipatotal;
 }
 
-int equipas_ordena(vetor_equipas *v, int criterio) {
+int equipas_ordena(vetor_equipas *v, int criterio){
 
-    return -1;
+
+
+    if(criterio==1){
+        
+        quickSortIterdiffgolos(v, 0, vetor_equipas_tamanho(v)-1);
+    }
+    else if(criterio==0){
+       quickSortIterordemalfabetica(v, 0, vetor_equipas_tamanho(v)-1);
+    }
+    else{
+        return -1;
+    }
+
+    return 0;
 }
+
+void quickSortIterdiffgolos(vetor_equipas v[], int left, int right) {
+    
+    int i, j, tamanho = right-left+1;
+
+    if(tamanho<2)
+    {
+        return;
+    }
+    
+    else{
+        
+        int pos=(right-left+1)/2+left; 
+        swap(v,pos,right);
+        i = left;
+        j = right-1; 
+
+        while(1) {
+        
+            while(i < right && (v->elementos[i].diff_golos) <= (v->elementos[right].diff_golos)){
+                i++;
+            }
+        
+            while(j >= 0 && (v->elementos[j].diff_golos) >= (v->elementos[right].diff_golos))
+            {
+                j--;
+            } 
+            if(i < j){
+                swap(v,j,i);
+            }else{
+                break;
+            } 
+        }  
+
+        swap(v,i,right); 
+        quickSortIterdiffgolos(v, left, i-1);
+        quickSortIterdiffgolos(v, i+1, right);     
+    
+    
+    }
+
+    
+}
+void quickSortIterordemalfabetica(vetor_equipas v[], int left, int right) {
+    
+    int i, j, tamanho = right-left+1;
+
+    if(tamanho<2)
+    {
+        return;
+    }
+    
+    
+    else{
+        
+        int pos=(right-left+1)/2+left; 
+        
+        swap(v,pos,right);
+
+        i = left;
+        j = right-1; 
+        
+        while(1) {
+        
+            while(i < right && strcmp(v->elementos[i].nome_equipa, v->elementos[right].nome_equipa)<=0){
+                i++;
+            }
+            while(j >= 0 && strcmp(v->elementos[j].nome_equipa, v->elementos[right].nome_equipa)>=0){
+                j--;
+            }
+            if(i < j){
+                swap(v,j,i);
+            }else
+                {
+                    break;
+                }
+        }       
+    
+    swap(v,i,right); 
+    quickSortIterordemalfabetica(v, left, i-1);
+    quickSortIterordemalfabetica(v, i+1, right);
+    }
+}
+
+void swap(vetor_equipas *x,int i,int j)
+{
+    equipa temp;
+    temp = x->elementos[i];
+    x->elementos[i]= x->elementos[j];
+    x->elementos[j]=temp;
+}
+
 
 
 int corrige_jogo(vetor *vec, const char *nomef){
