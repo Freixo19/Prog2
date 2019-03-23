@@ -106,7 +106,7 @@ vetor_equipas *stats_equipa(vetor *vec){
     int equipaigual[2]={0,0};
     vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,0),-1);
     vetor_equipas_insere(equipatotal,equipa_stats(vec,0,0,1),-1);
-    printf("tamanho: %i\n", vetor_equipas_tamanho(equipatotal));
+ 
     for(int i=1; i<vetor_tamanho(vec); i++){
 
         for(int j=0; j<vetor_equipas_tamanho(equipatotal); j++){
