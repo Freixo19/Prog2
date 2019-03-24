@@ -53,7 +53,9 @@ int jogos_save(vetor *vec, const char *nomef){
 }
 
 equipa equipa_stats(vetor *vec, int pos, int equipaigual, int casafora){
-    //o casafora serve para ver se o estamos a adicionar informações sobre a equipa que jogou em casa ou fora, sendo casafora=0 equipa que jogou em casa e casafora=1 a equipa que jogou fora.
+    /*o casafora serve para ver se o estamos a adicionar informações sobre a equipa 
+    que jogou em casa ou fora, sendo casafora=0 equipa que jogou em casa e casafora=1 a
+    equipa que jogou fora.*/
     equipa eqnova;
     if(equipaigual == 0){
         if(casafora == 0){
@@ -113,6 +115,7 @@ vetor_equipas *stats_equipa(vetor *vec){
             
             if(strcmp(vetor_elemento(vec,i)->nome_casa,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
                 eq = equipa_stats(vec,i,1,0);
+                vetor_equipas_elemento(equipatotal,j)->diff_golos += eq.diff_golos;
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
@@ -120,6 +123,7 @@ vetor_equipas *stats_equipa(vetor *vec){
             }
             if(strcmp(vetor_elemento(vec,i)->nome_fora,vetor_equipas_elemento(equipatotal,j)->nome_equipa)==0){
                 eq = equipa_stats(vec,i,1,1);
+                vetor_equipas_elemento(equipatotal,j)->diff_golos += eq.diff_golos;
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[0] += eq.vermelhos[0];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[1] += eq.vermelhos[1];
                 vetor_equipas_elemento(equipatotal,j)->vermelhos[2] += eq.vermelhos[2];
@@ -158,33 +162,26 @@ int equipas_ordena(vetor_equipas *v, int criterio){
 
 void quickSortIterdiffgolos(vetor_equipas v[], int left, int right) {
     
-    int i, j, tamanho = right-left+1;
+    int i = left, j = right-1, tamanho = right-left+1;
 
-    if(tamanho<2)
-    {
+    if(tamanho<2) {
         return;
-    }
-    
-    else{
-        
+    } else {
         int pos=(right-left+1)/2+left; 
         swap(v,pos,right);
-        i = left;
-        j = right-1; 
-
         while(1) {
         
-            while(i < right && (v->elementos[i].diff_golos) <= (v->elementos[right].diff_golos)){
+            while(i < right && (vetor_equipas_elemento(v,i)->diff_golos) <= (vetor_equipas_elemento(v,right)->diff_golos)) {
                 i++;
             }
         
-            while(j >= 0 && (v->elementos[j].diff_golos) >= (v->elementos[right].diff_golos))
-            {
+            while(j >= 0 && (vetor_equipas_elemento(v,j)->diff_golos) >= (vetor_equipas_elemento(v,right)->diff_golos)) {
                 j--;
             } 
-            if(i < j){
+            
+            if(i < j) {
                 swap(v,j,i);
-            }else{
+            } else {
                 break;
             } 
         }  
@@ -200,29 +197,22 @@ void quickSortIterdiffgolos(vetor_equipas v[], int left, int right) {
 }
 void quickSortIterordemalfabetica(vetor_equipas v[], int left, int right) {
     
-    int i, j, tamanho = right-left+1;
+    int i = left, j = right-1, tamanho = right-left+1;
 
-    if(tamanho<2)
-    {
+    if(tamanho<2){
         return;
-    }
-    
-    
-    else{
+    } else{
         
         int pos=(right-left+1)/2+left; 
         
-        swap(v,pos,right);
-
-        i = left;
-        j = right-1; 
+        swap(v,pos,right); 
         
         while(1) {
         
-            while(i < right && strcmp(v->elementos[i].nome_equipa, v->elementos[right].nome_equipa)<=0){
+            while(i < right && strcmp(vetor_equipas_elemento(v,i)->nome_equipa, vetor_equipas_elemento(v,right)->nome_equipa)<=0){
                 i++;
             }
-            while(j >= 0 && strcmp(v->elementos[j].nome_equipa, v->elementos[right].nome_equipa)>=0){
+            while(j >= 0 && strcmp(vetor_equipas_elemento(v,j)->nome_equipa, vetor_equipas_elemento(v,right)->nome_equipa)>=0){
                 j--;
             }
             if(i < j){
