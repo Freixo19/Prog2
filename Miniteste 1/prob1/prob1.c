@@ -54,7 +54,6 @@ lista* junta_ordenada(lista *lst1, lista *lst2)
 /*** problema 1.2 ***/
 int move_para_inicio(lista *lst, char *str1)
 {
-	l_elemento *aux;
 	int i=0;
 	for(int j=0; j<lista_tamanho(lst); j++){
 		if (strstr(lista_elemento(lst,j)->str,str1) != NULL){
