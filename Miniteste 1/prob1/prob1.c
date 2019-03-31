@@ -39,18 +39,14 @@ void quicksort(lista *lst,int inicio,int fim){
 /*** problema 1.1 ***/
 lista* junta_ordenada(lista *lst1, lista *lst2)
 {
-	printf("cheguei aqui 1\n");
 	/* complexidade do algoritmo: O(n*ln(n)) */
 	lista *lstn = lista_nova();
-	printf("cheguei aqui 2\n");
 	for(int i=0; i<lista_tamanho(lst1); i++){
 		lista_insere(lstn, lista_elemento(lst1,i)->str, NULL);
 	}
-	printf("cheguei aqui 3\n");
 	for(int j=0; j<lista_tamanho(lst2); j++){
 		lista_insere(lstn, lista_elemento(lst2,j)->str, NULL);
 	}
-	printf("cheguei aqui 4\n");
 	quicksort(lstn,0,lista_tamanho(lstn)-1);
 	return lstn;
 }
@@ -58,8 +54,17 @@ lista* junta_ordenada(lista *lst1, lista *lst2)
 /*** problema 1.2 ***/
 int move_para_inicio(lista *lst, char *str1)
 {
-
-	return 0;
+	l_elemento *aux;
+	int i=0;
+	for(int j=0; j<lista_tamanho(lst); j++){
+		if (strstr(lista_elemento(lst,j)->str,str1) != NULL){
+			lista_insere(lst, lista_elemento(lst,j)->str,lst->inicio);
+			lista_remove(lst,lista_elemento(lst,j+1));
+			i++;
+			printf("cheguei aqui %i\n",i);
+		}
+	}
+	return i;
 }
 
 /*** problema 1.3 ***/
