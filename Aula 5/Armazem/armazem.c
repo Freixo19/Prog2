@@ -8,7 +8,15 @@
 /* alinea b) */
 armazem* armazem_novo(int comprimento, int altura)
 {
-	return NULL;
+	armazen *a_novo = malloc(sizeof(armazem));
+	if(a_novo == NULL){
+		free(a_novo);
+		return NULL;
+	}
+	a_novo->comprimento = comprimento;
+	a_novo->altura = altura;
+	a_novo->contentores = fila_nova();
+	return a_novo;
 }
 
 /* alinea c) */

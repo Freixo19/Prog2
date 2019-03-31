@@ -10,9 +10,16 @@
  *  \param val valor das mercadorias no contentor
  *  \return apontador para o contentor; NULL se erro
  */
-contentor* contentor_novo(char* dest, float val)
-{
-	return NULL;
+contentor* contentor_novo(char* dest, float val){
+	contentor *c_novo = malloc(sizeof(contentor));
+	if(c_novo==NULL){
+		free(c_novo);
+		return NULL;
+	}
+	c_novo->destino = malloc(sizeof(char)*(strlen(dest)+1));
+	strcpy(c_novo->destino, dest);
+	c_novo->valor = val;
+	return c_novo;
 }
 
 /**
@@ -20,9 +27,12 @@ contentor* contentor_novo(char* dest, float val)
  *  \param contr apontador para o contentor
  *  \remark se contr = NULL retorna sem fazer nada
  */
-void contentor_apaga(contentor* contr)
-{
-
+void contentor_apaga(contentor* contr){
+	if(contr == NULL){
+		return;
+	}
+	free(contr->destino);
+	free(contr);
 }
 
 /**
