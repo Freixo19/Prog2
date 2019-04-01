@@ -11,7 +11,8 @@
 
 void quicksort(lista *lst,int inicio,int fim){
 	int i=inicio, j=fim, pivot= (fim+inicio)/2;
-	char aux[50];
+	char *aux;
+	aux = (char*)malloc(sizeof(char)*50); 
 	while(i<=j){
 		while(strcmp(lista_elemento(lst,i)->str,lista_elemento(lst,pivot)->str)<0){
 			i++;
@@ -60,7 +61,6 @@ int move_para_inicio(lista *lst, char *str1)
 			lista_insere(lst, lista_elemento(lst,j)->str,lst->inicio);
 			lista_remove(lst,lista_elemento(lst,j+1));
 			i++;
-			printf("cheguei aqui %i\n",i);
 		}
 	}
 	return i;
@@ -69,8 +69,18 @@ int move_para_inicio(lista *lst, char *str1)
 /*** problema 1.3 ***/
 int retira_de_pilha(pilha *p, char *titulo)
 {
-
-	return 0;
+	pilha *pilhaux = pilha_nova();
+	int i=0;
+	while(pilha_tamanho(p) != 0){
+		if(strcmp(pilha_top(p)->elemento, titulo)==0){
+			i++;
+			break;
+		} else{
+			pilha_push(pilhaux,pilha_top(p)->elemento);
+			pilha_top()
+		}
+	}
+	return i;
 }
 
 /****************************************************/
