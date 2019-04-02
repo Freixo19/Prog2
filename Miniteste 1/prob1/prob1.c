@@ -72,13 +72,18 @@ int retira_de_pilha(pilha *p, char *titulo)
 	pilha *pilhaux = pilha_nova();
 	int i=0;
 	while(pilha_tamanho(p) != 0){
-		if(strcmp(pilha_top(p)->elemento, titulo)==0){
+		if(strcmp(pilha_top(p), titulo)==0){
 			i++;
+			pilha_pop(p);
 			break;
 		} else{
-			pilha_push(pilhaux,pilha_top(p)->elemento);
-			pilha_top()
+		pilha_push(pilhaux,pilha_top(p));
+		pilha_pop(p);
 		}
+	}
+	while(pilha_tamanho(pilhaux) != 0){
+		pilha_push(p,pilha_top(pilhaux));
+		pilha_pop(pilhaux);
 	}
 	return i;
 }

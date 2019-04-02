@@ -12,7 +12,30 @@
 /*** problema 2 ***/
 vetor* contar_correspondencia(vetor *vcp_dest)
 {
-	return NULL;
+	int k=0;
+	vetor *v_novo = vetor_novo();
+	vetor_insere(v_novo,vetor_elemento(vcp_dest,0),0);
+	for(int i=0; i<vetor_tamanho(vcp_dest); i++){
+		for(int j=0; j<vetor_tamanho(v_novo); j++){
+			if(strcmp(vetor_elemento(vcp_dest,i),vetor_elemento(v_novo,j))==0){
+				k++;
+			}
+		}
+		if(k == 0){
+			vetor_insere(v_novo,vetor_elemento(vcp_dest,i),-1);
+		}
+		k=0;
+	}
+	for(int i=0; i<vetor_tamanho(v_novo); i++){
+		for(int j=0; j<vetor_tamanho(vcp_dest); j++){
+			if(strcmp(vetor_elemento(v_novo,i),vetor_elemento(vcp_dest,j))==0){
+				k++;
+			}
+		}
+		printf("%s: %i cartas\n",vetor_elemento(v_novo,i), k);
+		k=0;
+	}
+	return v_novo;
 }
 
 /****************************************************/
