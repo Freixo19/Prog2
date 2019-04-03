@@ -12,7 +12,7 @@
 /*** problema 1.1 ***/
 lista* filtra_titulos(lista *lista1, lista *lista2)
 {
-	/* complexidade do algoritmo: _______O(N^2)_______ */
+	/* complexidade do algoritmo: _______O(N*log(N))_______ */
 	int contador = 0;
 	lista *listan = lista_nova();
 	for(int i=0; i<lista_tamanho(lista1); i++){
@@ -33,7 +33,7 @@ lista* filtra_titulos(lista *lista1, lista *lista2)
 /*** problema 1.2 ***/
 int retira_comecados_por(lista *lst, char *inicio)
 {
-	int cont =0;
+	int cont = 0;
 	for(int i=0; i<lista_tamanho(lst); i++){
 		if(strncmp(lista_elemento(lst,i)->str,inicio,strlen(inicio))==0){
 			lista_remove(lst,lista_elemento(lst,i));
@@ -47,7 +47,25 @@ int retira_comecados_por(lista *lst, char *inicio)
 /*** problema 1.3 ***/
 int insere_na_pilha(pilha *p, char *titulo)
 {
-	return 0;
+	int indicador=0;
+	pilha *paux = pilha_nova();
+	while(pilha_tamanho(p)){
+		if(strcmp(pilha_top(p),titulo)==0) break;
+		else if(strcmp(pilha_top(p),titulo)>0){
+			pilha_push(paux,pilha_top(p));
+			pilha_pop(p);
+		}else{
+			pilha_push(p,titulo);
+			indicador++;
+			break;
+		}
+	}
+	while(pilha_tamanho(paux)){
+		pilha_push(p,pilha_top(paux));
+		pilha_pop(paux);
+	}
+	
+	return indicador;
 }
 
 /****************************************************/
