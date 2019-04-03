@@ -64,7 +64,6 @@ int insere_na_pilha(pilha *p, char *titulo)
 		pilha_push(p,pilha_top(paux));
 		pilha_pop(paux);
 	}
-	
 	return indicador;
 }
 
