@@ -85,6 +85,7 @@ int retira_de_pilha(pilha *p, char *titulo)
 		pilha_push(p,pilha_top(pilhaux));
 		pilha_pop(pilhaux);
 	}
+	pilha_apaga(pilhaux);
 	return i;
 }
 
